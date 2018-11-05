@@ -11,6 +11,15 @@
     state: "{{ docker_package_state }}"
   notify: restart docker
 
+- name: 'Add any additional docker startup options via the daemon.json config file'
+  copy:
+    content: "{{ docker_additional_service_opts }}"
+    dest: '/etc/docker/daemon.json'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  notify: restart docker
+
 - name: Ensure Docker is started and enabled at boot.
   service:
     name: docker
